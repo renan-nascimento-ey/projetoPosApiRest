@@ -13,44 +13,44 @@ public class Time
 
     [Required]
     [StringLength(80)]
-    public string? Nome { get; set; }
+    public string Nome { get; set; }
 
     [StringLength(30)]
-    public string? Apelido { get; set; }
+    public string Apelido { get; set; }
 
     [Required]
     [StringLength(50)]
-    public string? Localidade { get; set; }
+    public string Localidade { get; set; }
 
     [StringLength(30)]
-    public string? Cores { get; set; }
+    public string Cores { get; set; }
 
     [StringLength(30)]
-    public string? Mascote { get; set; }
+    public string Mascote { get; set; }
 
     public DateTime Fundacao { get; set; }
 
     [StringLength(100)]
-    public string? Estadio { get; set; }
+    public string Estadio { get; set; }
 
     // Ef Navegação
     [JsonIgnore]
-    public virtual ICollection<Jogador>? Jogadores { get; set; }
+    public virtual ICollection<Jogador> Jogadores { get; set; }
 
     [JsonIgnore]
-    public virtual ICollection<Transferencia>? TransferenciasOrigem { get; set; }
+    public virtual ICollection<Transferencia> TransferenciasOrigem { get; set; }
 
     [JsonIgnore]
-    public virtual ICollection<Transferencia>? TransferenciasDestino { get; set; }
+    public virtual ICollection<Transferencia> TransferenciasDestino { get; set; }
 
     [JsonIgnore]
-    public virtual ICollection<TorneioTime>? TimeTorneios { get; set; }
+    public virtual ICollection<TorneioTime> TimeTorneios { get; set; }
 
     [JsonIgnore]
-    public virtual ICollection<Partida>? PartidasCasa { get; set; }
+    public virtual ICollection<Partida> PartidasCasa { get; set; }
 
     [JsonIgnore]
-    public virtual ICollection<Partida>? PartidasVisitante { get; set; }
+    public virtual ICollection<Partida> PartidasVisitante { get; set; }
 
     public Time()
     {

@@ -6,19 +6,19 @@ namespace ProjetoFinalApi.Context;
 
 public class ApiDbContext : DbContext
 {
-    public DbSet<Time>? Times { get; set; }
+    public DbSet<Time> Times { get; set; }
 
-    public DbSet<Jogador>? Jogadores { get; set; }
+    public DbSet<Jogador> Jogadores { get; set; }
 
-    public DbSet<Transferencia>? Transferencias { get; set; }
+    public DbSet<Transferencia> Transferencias { get; set; }
 
-    public DbSet<Torneio>? Torneios { get; set; }
+    public DbSet<Torneio> Torneios { get; set; }
 
-    public DbSet<TorneioTime>? TorneiosTimes { get; set; }
+    public DbSet<TorneioTime> TorneiosTimes { get; set; }
 
-    public DbSet<Partida>? Partidas { get; set; }
+    public DbSet<Partida> Partidas { get; set; }
 
-    public DbSet<EventoPartida>? EventosPartidas { get; set; }
+    public DbSet<EventoPartida> EventosPartidas { get; set; }
 
     public ApiDbContext(DbContextOptions<ApiDbContext> options) 
         : base(options)

@@ -19,24 +19,24 @@ public class Transferencia
     public decimal Valor { get; set; }
 
     [Required]
-    public TipoContrato? Contrato { get; set; }
+    public TipoContrato Contrato { get; set; }
 
     // Ef Navegação
     [Required]
     public int JogadorId { get; set; }
 
     [JsonIgnore]
-    public virtual Jogador? Jogador { get; set; }
+    public virtual Jogador Jogador { get; set; }
 
     [Required]
     public int TimeOrigemId { get; set; }
 
     [JsonIgnore]
-    public virtual Time? TimeOrigem { get; set; }
+    public virtual Time TimeOrigem { get; set; }
 
     [Required]
     public int TimeDestinoId { get; set; }
 
     [JsonIgnore]
-    public virtual Time? TimeDestisno { get; set; }
+    public virtual Time TimeDestisno { get; set; }
 }

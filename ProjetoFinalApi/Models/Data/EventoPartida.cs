@@ -18,7 +18,7 @@ public class EventoPartida
     public DateTime Data { get; set; }
 
     [StringLength(280)]
-    public string? Descricao { get; set; }
+    public string Descricao { get; set; }
 
     // Ef Navegação
 
@@ -26,7 +26,7 @@ public class EventoPartida
     public int PartidaId { get; set; }
 
     [JsonIgnore]
-    public Partida? Partida { get; set; }    
+    public Partida Partida { get; set; }    
 
     public override string ToString()
     {

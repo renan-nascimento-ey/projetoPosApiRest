@@ -19,14 +19,14 @@ public class Partida
 
     // Será atualizada por evento da fila
     [StringLength(30)]
-    public string? PlacarFinal { get; set; }
+    public string PlacarFinal { get; set; }
 
     // Será atualizada por evento da fila
     public int? TimeVencedorId { get; set; }
 
     [Required]
     [StringLength(100)]
-    public string? Local { get; set; }
+    public string Local { get; set; }
 
     // Ef Navegação
 
@@ -34,22 +34,22 @@ public class Partida
     public int TorneioId { get; set; }
 
     [JsonIgnore]
-    public Torneio? Torneio { get; set; }
+    public Torneio Torneio { get; set; }
 
     [Required]
     public int TimeCasaId { get; set; }
 
     [JsonIgnore]
-    public Time? TimeCasa { get; set; }
+    public Time TimeCasa { get; set; }
 
     [Required]
     public int TimeVisitanteId { get; set; }
 
     [JsonIgnore]
-    public Time? TimeVisitante { get; set; }
+    public Time TimeVisitante { get; set; }
 
     [JsonIgnore]
-    public virtual ICollection<EventoPartida>? EventosPartida { get; set; }
+    public virtual ICollection<EventoPartida> EventosPartida { get; set; }
 
     public Partida()
     {

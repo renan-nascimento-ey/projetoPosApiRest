@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using ProjetoFinalApi.Context;
 using ProjetoFinalApi.Extensions;
+using ProjetoFinalApi.Repository;
+using ProjetoFinalApi.Repository.Interfaces;
 using TinyHelpers.Json.Serialization;
 
 namespace ProjetoFinalApi
@@ -12,6 +14,8 @@ namespace ProjetoFinalApi
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddControllers()
                 .AddJsonOptions(options => {
@@ -26,12 +30,12 @@ namespace ProjetoFinalApi
             string mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApiDbContext>(options => 
                         options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
-
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
 
-            // tratamento de erro global
+            // Tratamento de erro global
             app.ConfigureExceptionHandler();
 
             if (app.Environment.IsDevelopment())

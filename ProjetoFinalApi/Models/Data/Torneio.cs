@@ -14,21 +14,21 @@ public class Torneio
 
     [Required]
     [StringLength(100)]
-    public string? Nome { get; set; }
+    public string Nome { get; set; }
 
     [StringLength(50)]
-    public string? Apelido { get; set; }
+    public string Apelido { get; set; }
 
     [Required]
     [StringLength(100)]
-    public string? Organizacao { get; set; }
+    public string Organizacao { get; set; }
 
     [Required]
     [StringLength(15)]
-    public string? Edicao { get; set; }
+    public string Edicao { get; set; }
 
     [StringLength(5)]
-    public string? Serie { get; set; }
+    public string Serie { get; set; }
 
     [Required]
     public DateTime DataInicio { get; set; }
@@ -50,10 +50,10 @@ public class Torneio
     // Ef Navegação
 
     [JsonIgnore]
-    public virtual ICollection<TorneioTime>? TorneioTimes { get; set; }
+    public virtual ICollection<TorneioTime> TorneioTimes { get; set; }
 
     [JsonIgnore]
-    public virtual ICollection<Partida>? Partidas { get; set; }
+    public virtual ICollection<Partida> Partidas { get; set; }
 
     public Torneio()
     {
