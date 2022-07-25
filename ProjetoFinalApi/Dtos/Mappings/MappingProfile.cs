@@ -9,5 +9,9 @@ public class MappingProfile : Profile
     {
         CreateMap<Time, TimeDTO>().ReverseMap();
         CreateMap<Jogador, JogadorDTO>().ReverseMap();
+        CreateMap<Transferencia, TransferenciaDTO>().ReverseMap();
+        CreateMap<Torneio, TorneioDTO>().ReverseMap();
+        CreateMap<Partida, PartidaDTO>().ReverseMap();
+        CreateMap<EventoPartida, EventoPartidaDTO>().ReverseMap();
     }
 }

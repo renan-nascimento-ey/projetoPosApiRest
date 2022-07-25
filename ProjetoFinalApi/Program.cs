@@ -8,6 +8,7 @@ using ProjetoFinalApi.Models.Data;
 using ProjetoFinalApi.Models.Data.Validations;
 using ProjetoFinalApi.Repository;
 using ProjetoFinalApi.Repository.Interfaces;
+using ProjetoFinalApi.Services;
 using TinyHelpers.Json.Serialization;
 
 namespace ProjetoFinalApi
@@ -38,6 +39,13 @@ namespace ProjetoFinalApi
                 });
 
             builder.Services.AddScoped<IValidator<Time>, TimeValidator>();
+            builder.Services.AddScoped<IValidator<Jogador>, JogadorValidator>();
+            builder.Services.AddScoped<IValidator<Transferencia>, TransferenciaValidator>();
+            builder.Services.AddScoped<IValidator<Torneio>, TorneioValidator>();
+            builder.Services.AddScoped<IValidator<Partida>, PartidaValidator>();
+            builder.Services.AddScoped<IValidator<EventoPartida>, EventoPartidaValidator>();
+
+            //builder.Services.AddSingleton(AzureServiceBusPublisher);
 
             //builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
