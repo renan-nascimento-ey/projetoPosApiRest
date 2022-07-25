@@ -14,17 +14,17 @@ namespace ProjetoFinalApi.Repository
         {
         }
 
-        public PagedList<Time> GetTimes(TimeParameters timeParameters)
+        public async Task<PagedList<Time>> GetTimesAsync(PagedListDefaultParameters pagedListDefaultParameters)
         {
-            return PagedList<Time>.ToPagedList(Get().OrderBy(on => on.Nome), 
-                timeParameters.PageNumber, timeParameters.PageSize);
+            return await PagedList<Time>.ToPagedListAsync(Get().OrderBy(on => on.Nome),
+                pagedListDefaultParameters.PageNumber, pagedListDefaultParameters.PageSize);
         }
 
-        public IEnumerable<Jogador> GetJogadoresTime(Expression<Func<Time, bool>> predicate)
+        public async Task<IEnumerable<Jogador>> GetJogadoresTimeAsync(Expression<Func<Time, bool>> predicate)
         {
             var jogadores = new List<Jogador>();
 
-            var timeJogadores = Get().Include(t => t.Jogadores).Where(predicate).FirstOrDefault();
+            var timeJogadores = await Get().Include(t => t.Jogadores).Where(predicate).FirstOrDefaultAsync();
 
             return timeJogadores is not null ? timeJogadores.Jogadores.OrderBy(j => j.Nome).AsEnumerable() : null;
         }

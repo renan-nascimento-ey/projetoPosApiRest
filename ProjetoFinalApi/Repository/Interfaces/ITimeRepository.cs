@@ -6,9 +6,9 @@ namespace ProjetoFinalApi.Repository.Interfaces
 {
     public interface ITimeRepository : IRepository<Time>
     {
-        PagedList<Time> GetTimes(TimeParameters timeParameters);
+        Task<PagedList<Time>> GetTimesAsync(PagedListDefaultParameters timeParameters);
 
-        IEnumerable<Jogador> GetJogadoresTime(Expression<Func<Time, bool>> predicate);
+        Task<IEnumerable<Jogador>> GetJogadoresTimeAsync(Expression<Func<Time, bool>> predicate);
 
         //IEnumerable<Torneio> GetTorneiosTime();
 

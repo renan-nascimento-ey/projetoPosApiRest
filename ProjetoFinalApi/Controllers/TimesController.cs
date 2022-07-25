@@ -27,9 +27,9 @@ namespace ProjetoFinalApi.Controllers
         // CRUD
 
         [HttpGet]
-        public ActionResult<IEnumerable<TimeDTO>> Get([FromQuery] TimeParameters timeParameters)
+        public async Task<ActionResult<IEnumerable<TimeDTO>>> Get([FromQuery] PagedListDefaultParameters pagedListDefaultParameters)
         {
-            var times = _uof.TimeRepository.GetTimes(timeParameters);
+            var times = await _uof.TimeRepository.GetTimesAsync(pagedListDefaultParameters);
 
             var metadata = new
             {
@@ -47,9 +47,9 @@ namespace ProjetoFinalApi.Controllers
         }
 
         [HttpGet("{id:int:min(1)}", Name = "ObterTime")]
-        public ActionResult<TimeDTO> Get(int id)
+        public async Task<ActionResult<TimeDTO>> Get(int id)
         {
-            var time = _uof.TimeRepository.GetById(time => time.Id == id);
+            var time = await _uof.TimeRepository.GetByIdAsync(time => time.Id == id);
 
             if (time is null)
                 return NotFound();
@@ -104,7 +104,7 @@ namespace ProjetoFinalApi.Controllers
         [HttpDelete("{id:int:min(1)}")]
         public async Task<ActionResult<TimeDTO>> Delete(int id)
         {
-            var time = _uof.TimeRepository.GetById(time => time.Id == id);
+            var time = await _uof.TimeRepository.GetByIdAsync(time => time.Id == id);
 
             if (time is null)
                 return NotFound();
@@ -118,9 +118,9 @@ namespace ProjetoFinalApi.Controllers
         // Extensions
 
         [HttpGet("{id:int:min(1)}/jogadores")]
-        public ActionResult<IEnumerable<JogadorDTO>> GetJogadoresTime(int id)
+        public async Task<ActionResult<IEnumerable<JogadorDTO>>> GetJogadoresTime(int id)
         {
-            var jogadores = _uof.TimeRepository.GetJogadoresTime(time => time.Id == id);
+            var jogadores = await _uof.TimeRepository.GetJogadoresTimeAsync(time => time.Id == id);
 
             if (jogadores is null)
                 return NotFound();

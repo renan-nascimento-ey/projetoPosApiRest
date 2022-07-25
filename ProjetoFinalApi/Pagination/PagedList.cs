@@ -1,4 +1,6 @@
-﻿namespace ProjetoFinalApi.Pagination;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace ProjetoFinalApi.Pagination;
 
 public class PagedList<T> : List<T>
 {
@@ -24,10 +26,10 @@ public class PagedList<T> : List<T>
         AddRange(items);
     }
 
-    public static PagedList<T> ToPagedList(IQueryable<T> dataSource, int pageNumber, int pageSize)
+    public async static Task<PagedList<T>> ToPagedListAsync(IQueryable<T> dataSource, int pageNumber, int pageSize)
     {
         var count = dataSource.Count();
-        var items = dataSource.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+        var items = await dataSource.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PagedList<T>(items, count, pageNumber, pageSize);
     }
