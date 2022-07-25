@@ -1,4 +1,4 @@
-﻿namespace ProjetoFinalApi.Dtos;
+﻿namespace ProjetoFinalApi.DTOs;
 
 public class TimeDTO
 {

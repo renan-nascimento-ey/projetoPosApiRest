@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjetoFinalApi.Context;
 using ProjetoFinalApi.Models.Data;
+using ProjetoFinalApi.Pagination;
 using ProjetoFinalApi.Repository.Interfaces;
+using System.Linq.Expressions;
 
 namespace ProjetoFinalApi.Repository
 {
@@ -12,15 +14,25 @@ namespace ProjetoFinalApi.Repository
         {
         }
 
-        //public IEnumerable<Jogador> GetJogadores()
-        //{
-        //    return (IEnumerable<Jogador>)Get().Include(t => t.Jogadores).Select(t => t.Jogadores);
-        //}
+        public PagedList<Time> GetTimes(TimeParameters timeParameters)
+        {
+            return PagedList<Time>.ToPagedList(Get().OrderBy(on => on.Nome), 
+                timeParameters.PageNumber, timeParameters.PageSize);
+        }
 
+        public IEnumerable<Jogador> GetJogadoresTime(Expression<Func<Time, bool>> predicate)
+        {
+            var jogadores = new List<Jogador>();
+
+            var timeJogadores = Get().Include(t => t.Jogadores).Where(predicate).FirstOrDefault();
+
+            return timeJogadores is not null ? timeJogadores.Jogadores.OrderBy(j => j.Nome).AsEnumerable() : null;
+        }
+       
         //public IEnumerable<Partida> GetPartidas()
         //{
         //    var partidas = new List<Partida>();
-            
+
         //    partidas.AddRange((IEnumerable<Partida>)Get().Include(t => t.PartidasCasa).Select(t => t.PartidasCasa));
         //    partidas.AddRange((IEnumerable<Partida>)Get().Include(t => t.PartidasVisitante).Select(t => t.PartidasVisitante));
 
@@ -37,7 +49,7 @@ namespace ProjetoFinalApi.Repository
         //    {
         //        torneios.Add(item.Torneio);
         //    }
-            
+
         //    return torneios;
         //}
 

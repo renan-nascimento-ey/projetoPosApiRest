@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
-using ProjetoFinalApi.Dtos;
 using ProjetoFinalApi.Models.Data;
 
-namespace ProjetoFinalApi.DTOs.Mappings
-{
-    public class MappingProfile : Profile
-    {
-        public MappingProfile()
-        {
-            CreateMap<Time, TimeDTO>().ReverseMap();
+namespace ProjetoFinalApi.DTOs.Mappings;
 
-        }
+public class MappingProfile : Profile
+{
+    public MappingProfile()
+    {
+        CreateMap<Time, TimeDTO>().ReverseMap();
+        CreateMap<Jogador, JogadorDTO>().ReverseMap();
     }
 }

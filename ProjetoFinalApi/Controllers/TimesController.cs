@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using ProjetoFinalApi.Dtos;
+using Newtonsoft.Json;
+using ProjetoFinalApi.DTOs;
 using ProjetoFinalApi.Extensions;
 using ProjetoFinalApi.Models.Data;
+using ProjetoFinalApi.Pagination;
 using ProjetoFinalApi.Repository.Interfaces;
 
 namespace ProjetoFinalApi.Controllers
@@ -22,10 +24,24 @@ namespace ProjetoFinalApi.Controllers
             _mapper = mapper;
         }
 
+        // CRUD
+
         [HttpGet]
-        public ActionResult<IEnumerable<TimeDTO>> Get()
+        public ActionResult<IEnumerable<TimeDTO>> Get([FromQuery] TimeParameters timeParameters)
         {
-            var times = _uof.TimeRepository.Get().ToList();
+            var times = _uof.TimeRepository.GetTimes(timeParameters);
+
+            var metadata = new
+            {
+                times.TotalCount,
+                times.PageSize,
+                times.CurrentPage,
+                times.TotalPages,
+                times.HasNext,
+                times.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             
             return _mapper.Map<List<TimeDTO>>(times);
         }
@@ -46,11 +62,11 @@ namespace ProjetoFinalApi.Controllers
         {
             var time = _mapper.Map<Time>(timeDto);
 
-            var validacaoResult = await validator.ValidateAsync(time);
+            var modelValidationResult = await validator.ValidateAsync(time);
 
-            if (!validacaoResult.IsValid)
+            if (!modelValidationResult.IsValid)
             {
-                validacaoResult.AddToModelState(ModelState);
+                modelValidationResult.AddToModelState(ModelState);
 
                 return BadRequest(ModelState);
             }
@@ -63,12 +79,21 @@ namespace ProjetoFinalApi.Controllers
         }
 
         [HttpPut("{id:int:min(1)}")]
-        public async Task<ActionResult> Put(int id, [FromBody]TimeDTO timeDto)
+        public async Task<ActionResult> Put(int id, [FromServices] IValidator<Time> validator, [FromBody]TimeDTO timeDto)
         {
             if (id != timeDto.Id)
                 return BadRequest();
 
             var time = _mapper.Map<Time>(timeDto);
+
+            var modelValidationResult = await validator.ValidateAsync(time);
+
+            if (!modelValidationResult.IsValid)
+            {
+                modelValidationResult.AddToModelState(ModelState);
+
+                return BadRequest(ModelState);
+            }
 
             _uof.TimeRepository.Update(time);
             await _uof.CommitAsync();
@@ -88,6 +113,19 @@ namespace ProjetoFinalApi.Controllers
             await _uof.CommitAsync();
 
             return Ok(_mapper.Map<TimeDTO>(time));
+        }
+
+        // Extensions
+
+        [HttpGet("{id:int:min(1)}/jogadores")]
+        public ActionResult<IEnumerable<JogadorDTO>> GetJogadoresTime(int id)
+        {
+            var jogadores = _uof.TimeRepository.GetJogadoresTime(time => time.Id == id);
+
+            if (jogadores is null)
+                return NotFound();
+
+            return Ok(_mapper.Map<List<JogadorDTO>>(jogadores));
         }
     }
 }
