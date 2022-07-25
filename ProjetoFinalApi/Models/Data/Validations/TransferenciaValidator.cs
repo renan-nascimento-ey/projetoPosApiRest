@@ -20,15 +20,22 @@ public class TransferenciaValidator : AbstractValidator<Transferencia>
 
         RuleFor(x => x.TimeOrigemId).Must(ValidarTimesOrigemDestino).WithMessage("O Time de Origem e Destino devem ser diferentes.");
 
-        RuleFor(x => x.JogadorId).MustAsync(ValidarJogadorIdAsync).WithMessage("O id do Jogador deve ser válido.");
+        RuleFor(x => x.JogadorId).MustAsync(ValidarJogadorIdAsync).WithMessage("O id do Jogador deve ser válido e ele não pode ser transfêrido para o time onde já é funcionário.");
         RuleFor(x => x.TimeOrigemId).MustAsync(ValidarTimeIdAsync).WithMessage("O id do Time de Origem deve ser válido.");
         RuleFor(x => x.TimeDestinoId).MustAsync(ValidarTimeIdAsync).WithMessage("O id do Time de Destino deve ser válido.");         
     }
 
-    private async Task<bool> ValidarJogadorIdAsync(int jogadorId, CancellationToken cancellationToken)
+    private async Task<bool> ValidarJogadorIdAsync(Transferencia transferencia, int jogadorId, CancellationToken cancellationToken)
     {
         var jogador = await _uof.JogadorRepository.GetByIdAsync(x => x.Id == jogadorId);
-        return jogador is not null;
+
+        if (jogador == null)
+            return false;
+
+        if (transferencia.TimeDestinoId == jogador.TimeId)
+            return false;
+
+        return true;
     }
 
     private async Task<bool> ValidarTimeIdAsync(int timeId, CancellationToken cancellationToken)

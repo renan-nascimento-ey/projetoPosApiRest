@@ -11,6 +11,7 @@ public class MappingProfile : Profile
         CreateMap<Jogador, JogadorDTO>().ReverseMap();
         CreateMap<Transferencia, TransferenciaDTO>().ReverseMap();
         CreateMap<Torneio, TorneioDTO>().ReverseMap();
+        CreateMap<TorneioTime, TorneioTimeDTO>().ReverseMap();
         CreateMap<Partida, PartidaDTO>().ReverseMap();
         CreateMap<Partida, NovaPartidaDTO>().ReverseMap();
         CreateMap<EventoPartida, EventoPartidaDTO>().ReverseMap();

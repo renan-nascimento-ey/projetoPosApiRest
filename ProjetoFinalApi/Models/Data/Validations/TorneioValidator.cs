@@ -31,6 +31,16 @@ public class TorneioValidator : AbstractValidator<Torneio>
             {
                 context.AddFailure("O valor de Premiação do Campeão deve ser maior que 0.");
             }
-        });        
-    }  
+        });
+
+        RuleFor(x => x.DataInicio).Must(ValidarDatas).WithMessage("A Data Final deve ser maior que a Data Inicial.");
+    }
+
+    private bool ValidarDatas(Torneio torneiro, DateTime dataInicio)
+    {
+        if (dataInicio.CompareTo(torneiro.DataFim) > 0)
+            return false;
+
+        return true;
+    }
 }

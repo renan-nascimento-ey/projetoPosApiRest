@@ -57,7 +57,7 @@ public class TorneiosController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> Post([FromServices] IValidator<Torneio> validator, [FromBody] TorneioDTO torneioDTO)
+    public async Task<ActionResult> Post([FromServices] IValidator<Torneio> validator, [FromBody] NovoTorneioDTO torneioDTO)
     {
         var torneio = _mapper.Map<Torneio>(torneioDTO);
 
@@ -114,7 +114,11 @@ public class TorneiosController : ControllerBase
         return Ok(_mapper.Map<TorneioDTO>(torneio));
     }
 
+    // TODO alterar lista de times do torneio
+
     // Extensions
+
+    // TODO salvar no banco e enviar para um fila
 
     /*
 POST /torneios/<id>/partidas/<id>/eventos/inicio 

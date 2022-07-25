@@ -18,7 +18,11 @@ public class PartidaValidator : AbstractValidator<Partida>
 
         RuleFor(x => x.TorneioId).MustAsync(ValidarTorneioIdAsync).WithMessage("O id do Torneio deve ser válido."); 
         RuleFor(x => x.TimeCasaId).MustAsync(ValidarTimeIdAsync).WithMessage("O id do Time da Casa deve ser válido."); 
-        RuleFor(x => x.TimeVisitanteId).MustAsync(ValidarTimeIdAsync).WithMessage("O id do Time de Visitante deve ser válido."); 
+        RuleFor(x => x.TimeVisitanteId).MustAsync(ValidarTimeIdAsync).WithMessage("O id do Time de Visitante deve ser válido.");
+
+        RuleFor(x => x.TimeCasaId).Must(ValidarTimes).WithMessage("Os Times devem ser diferentes.");
+
+        RuleFor(x => x.DataHoraInicio).Must(ValidarDatas).WithMessage("A Data Final deve ser maior que a Data Inicial.");
     }
 
     private async Task<bool> ValidarTorneioIdAsync(int torneioId, CancellationToken cancellationToken)
@@ -31,5 +35,18 @@ public class PartidaValidator : AbstractValidator<Partida>
     {
         var time = await _uof.TimeRepository.GetByIdAsync(x => x.Id == timeId);
         return time is not null;
+    }
+
+    private bool ValidarTimes(Partida partida, int timeCasaId)
+    {
+        return timeCasaId != partida.TimeVisitanteId;
+    }
+
+    private bool ValidarDatas(Partida partida, DateTime dataHoraInicio)
+    {
+        if (dataHoraInicio.CompareTo(partida.DataHoraFim) > 0)
+            return false;
+
+        return true;
     }
 }

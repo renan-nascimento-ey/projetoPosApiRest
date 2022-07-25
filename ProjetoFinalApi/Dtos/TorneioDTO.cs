@@ -27,10 +27,10 @@ public class TorneioDTO
 
     public decimal PremiacaoViceCampeao { get; set; }
 
-    public ICollection<TorneioTimeDTO> TorneioTimes { get; set; }
+    //public ICollection<TorneioTimeDTO> TorneioTimes { get; set; }
 
-    public TorneioDTO()
-    {
-        TorneioTimes = new Collection<TorneioTimeDTO>();
-    }
+    //public TorneioDTO()
+    //{
+    //    TorneioTimes = new Collection<TorneioTimeDTO>();
+    //}
 }

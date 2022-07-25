@@ -19,7 +19,7 @@ namespace ProjetoFinalApi.Repository
             if (transferenciaParameters.Predicate is not null)
                 dataSource = dataSource.Where(transferenciaParameters.Predicate);
 
-            return await PagedList<Transferencia>.ToPagedListAsync(dataSource,
+            return await PagedList<Transferencia>.ToPagedListAsync(dataSource.OrderByDescending(on => on.Data),
                 transferenciaParameters.PageNumber, transferenciaParameters.PageSize);
         }
     }
