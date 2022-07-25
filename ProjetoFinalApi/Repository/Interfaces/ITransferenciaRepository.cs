@@ -1,8 +1,9 @@
 ﻿using ProjetoFinalApi.Models.Data;
+using ProjetoFinalApi.Pagination;
 
-namespace ProjetoFinalApi.Repository.Interfaces
+namespace ProjetoFinalApi.Repository.Interfaces;
+
+public interface ITransferenciaRepository : IRepository<Transferencia>
 {
-    public interface ITransferenciaRepository : IRepository<Transferencia>
-    {
-    }
+    Task<PagedList<Transferencia>> GetTransferenciasAsync(TransferenciaParameters transferenciaParameters);
 }

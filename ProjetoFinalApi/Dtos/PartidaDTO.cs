@@ -1,4 +1,6 @@
-﻿namespace ProjetoFinalApi.DTOs;
+﻿using System.Text.Json.Serialization;
+
+namespace ProjetoFinalApi.DTOs;
 
 public class PartidaDTO
 {

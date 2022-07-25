@@ -2,18 +2,17 @@
 using ProjetoFinalApi.Pagination;
 using System.Linq.Expressions;
 
-namespace ProjetoFinalApi.Repository.Interfaces
+namespace ProjetoFinalApi.Repository.Interfaces;
+
+public interface ITimeRepository : IRepository<Time>
 {
-    public interface ITimeRepository : IRepository<Time>
-    {
-        Task<PagedList<Time>> GetTimesAsync(PagedListDefaultParameters timeParameters);
+    Task<PagedList<Time>> GetTimesAsync(PagedListDefaultParameters pagedListDefaultParameters);
 
-        Task<IEnumerable<Jogador>> GetJogadoresTimeAsync(Expression<Func<Time, bool>> predicate);
+    Task<IEnumerable<Jogador>> GetJogadoresTimeAsync(Expression<Func<Time, bool>> predicate);
 
-        //IEnumerable<Torneio> GetTorneiosTime();
+    //IEnumerable<Torneio> GetTorneiosTime();
 
-        //IEnumerable<Partida> GetPartidas();
+    //IEnumerable<Partida> GetPartidas();
 
-        //IEnumerable<Transferencia> GetTransferencias();
-    }
+    //IEnumerable<Transferencia> GetTransferencias();
 }

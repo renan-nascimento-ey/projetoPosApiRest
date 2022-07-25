@@ -1,8 +1,7 @@
 ﻿using ProjetoFinalApi.Models.Data;
 
-namespace ProjetoFinalApi.Repository.Interfaces
+namespace ProjetoFinalApi.Repository.Interfaces;
+
+public interface IEventoPartidaRepository : IRepository<EventoPartida>
 {
-    public interface IEventoPartidaRepository : IRepository<EventoPartida>
-    {
-    }
 }
