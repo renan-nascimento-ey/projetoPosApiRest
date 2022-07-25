@@ -1,5 +1,7 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProjetoFinalApi.Context;
+using ProjetoFinalApi.DTOs.Mappings;
 using ProjetoFinalApi.Extensions;
 using ProjetoFinalApi.Repository;
 using ProjetoFinalApi.Repository.Interfaces;
@@ -14,6 +16,14 @@ namespace ProjetoFinalApi
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            builder.Services.AddSingleton(mapper);
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

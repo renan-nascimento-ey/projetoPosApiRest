@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using ProjetoFinalApi.Dtos;
 using ProjetoFinalApi.Models.Data;
 using ProjetoFinalApi.Repository.Interfaces;
 
@@ -10,56 +12,61 @@ namespace ProjetoFinalApi.Controllers
     public class TimesController : ControllerBase
     {
         private readonly IUnitOfWork _uof;
+        private readonly IMapper _mapper;
 
-        public TimesController(IUnitOfWork uof)
+        public TimesController(IUnitOfWork uof, IMapper mapper)
         {
             _uof = uof;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Time>> Get()
+        public ActionResult<IEnumerable<TimeDTO>> Get()
         {
-            return _uof.TimeRepository.Get().ToList();
+            var times = _uof.TimeRepository.Get().ToList();
+            
+            return _mapper.Map<List<TimeDTO>>(times);
         }
 
         [HttpGet("{id:int:min(1)}", Name = "ObterTime")]
-        public ActionResult<Time> Get(int id)
+        public ActionResult<TimeDTO> Get(int id)
         {
             var time = _uof.TimeRepository.GetById(time => time.Id == id);
 
             if (time is null)
                 return NotFound();
 
-            return Ok(time);
+            return Ok(_mapper.Map<TimeDTO>(time));
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] Time time)
+        public async Task<ActionResult> Post([FromBody] TimeDTO timeDto)
         {
-            if (time is null)
-                return BadRequest();
+            var time = _mapper.Map<Time>(timeDto);
 
             _uof.TimeRepository.Add(time);
             await _uof.CommitAsync();
 
             return new CreatedAtRouteResult("ObterTime",
-                new { id = time.Id }, time);
+                new { id = time.Id }, _mapper.Map<TimeDTO>(time));
         }
 
         [HttpPut("{id:int:min(1)}")]
-        public async Task<ActionResult> Put(int id, [FromBody]Time time)
+        public async Task<ActionResult> Put(int id, [FromBody]TimeDTO timeDto)
         {
-            if (id != time.Id)
+            if (id != timeDto.Id)
                 return BadRequest();
+
+            var time = _mapper.Map<Time>(timeDto);
 
             _uof.TimeRepository.Update(time);
             await _uof.CommitAsync();
 
-            return Ok(time);
+            return Ok(timeDto);
         }
 
         [HttpDelete("{id:int:min(1)}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult<TimeDTO>> Delete(int id)
         {
             var time = _uof.TimeRepository.GetById(time => time.Id == id);
 
@@ -69,7 +76,7 @@ namespace ProjetoFinalApi.Controllers
             _uof.TimeRepository.Delete(time);
             await _uof.CommitAsync();
 
-            return Ok(time);
+            return Ok(_mapper.Map<TimeDTO>(time));
         }
     }
 }
