@@ -1,8 +1,11 @@
 using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using ProjetoFinalApi.Context;
 using ProjetoFinalApi.DTOs.Mappings;
 using ProjetoFinalApi.Extensions;
+using ProjetoFinalApi.Models.Data;
+using ProjetoFinalApi.Models.Data.Validations;
 using ProjetoFinalApi.Repository;
 using ProjetoFinalApi.Repository.Interfaces;
 using TinyHelpers.Json.Serialization;
@@ -33,6 +36,8 @@ namespace ProjetoFinalApi
                     options.JsonSerializerOptions.Converters.Add(new TimeOnlyConverter());
                     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
                 });
+
+            builder.Services.AddScoped<IValidator<Time>, TimeValidator>();
 
             //builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

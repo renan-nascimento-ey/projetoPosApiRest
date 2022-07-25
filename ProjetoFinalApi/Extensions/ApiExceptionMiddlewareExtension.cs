@@ -4,7 +4,7 @@ using System.Net;
 
 namespace ProjetoFinalApi.Extensions;
 
-public static class ApiExceptionMiddlewareExtensions
+public static class ApiExceptionMiddlewareExtension
 {
     public static void ConfigureExceptionHandler(this IApplicationBuilder app)
     {

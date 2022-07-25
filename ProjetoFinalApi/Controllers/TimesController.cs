@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using ProjetoFinalApi.Dtos;
+using ProjetoFinalApi.Extensions;
 using ProjetoFinalApi.Models.Data;
 using ProjetoFinalApi.Repository.Interfaces;
 
@@ -40,9 +42,18 @@ namespace ProjetoFinalApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] TimeDTO timeDto)
+        public async Task<ActionResult> Post([FromServices] IValidator<Time> validator, [FromBody] TimeDTO timeDto)
         {
             var time = _mapper.Map<Time>(timeDto);
+
+            var validacaoResult = await validator.ValidateAsync(time);
+
+            if (!validacaoResult.IsValid)
+            {
+                validacaoResult.AddToModelState(ModelState);
+
+                return BadRequest(ModelState);
+            }
 
             _uof.TimeRepository.Add(time);
             await _uof.CommitAsync();
