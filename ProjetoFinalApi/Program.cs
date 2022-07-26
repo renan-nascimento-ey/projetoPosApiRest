@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using ProjetoFinalApi.Context;
 using ProjetoFinalApi.DTOs.Mappings;
 using ProjetoFinalApi.Extensions;
@@ -9,6 +10,7 @@ using ProjetoFinalApi.Models.Data.Validations;
 using ProjetoFinalApi.Repository;
 using ProjetoFinalApi.Repository.Interfaces;
 using ProjetoFinalApi.Services;
+using ProjetoFinalApi.Services.Configs;
 using TinyHelpers.Json.Serialization;
 
 namespace ProjetoFinalApi
@@ -43,9 +45,7 @@ namespace ProjetoFinalApi
             builder.Services.AddScoped<IValidator<Transferencia>, TransferenciaValidator>();
             builder.Services.AddScoped<IValidator<Torneio>, TorneioValidator>();
             builder.Services.AddScoped<IValidator<Partida>, PartidaValidator>();
-            builder.Services.AddScoped<IValidator<EventoPartida>, EventoPartidaValidator>();
-
-            //builder.Services.AddSingleton(AzureServiceBusPublisher);
+            builder.Services.AddScoped<IValidator<EventoPartida>, EventoPartidaValidator>();          
 
             //builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -53,7 +53,15 @@ namespace ProjetoFinalApi
             string mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApiDbContext>(options => 
                         options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
-            
+
+            builder.Services.Configure<AzureServiceBusConfig>(builder.Configuration.GetSection("AzureServiceBus"));
+            string serviceBusConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddAzureClients(builderAzureClient =>
+            {
+                builderAzureClient.AddServiceBusClient(builder.Configuration["AzureServiceBus:ConnectionString"]);
+            });
+            builder.Services.AddTransient<AzureServiceBusPublisher>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

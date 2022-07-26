@@ -73,6 +73,7 @@ public class PartidasController : ControllerBase
     public async Task<ActionResult> Post([FromServices] IValidator<Partida> validator, [FromBody] NovaPartidaDTO partidaDTO)
     {
         var partida = _mapper.Map<Partida>(partidaDTO);
+        partida.DataHoraFim = partida.DataHoraInicio.AddMinutes(90);
 
         var modelValidationResult = await validator.ValidateAsync(partida);
 

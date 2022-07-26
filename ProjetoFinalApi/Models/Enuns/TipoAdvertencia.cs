@@ -2,6 +2,6 @@
 
 public enum TipoAdvertencia
 {
-    AMARELO,
-    VERMELHO
+    AMARELO = 1,
+    VERMELHO = 2
 }

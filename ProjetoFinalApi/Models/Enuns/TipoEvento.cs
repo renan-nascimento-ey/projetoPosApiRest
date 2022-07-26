@@ -6,8 +6,7 @@ public enum TipoEvento
     GOL,
     INTERVALO,
     ACRESCIMO,
-    SUBSTITUICAO_SAIDA,
-    SUBSTITUICAO_ENTRADA,
+    SUBSTITUICAO,
     ADVERTENCIA,
     FIM
 }
