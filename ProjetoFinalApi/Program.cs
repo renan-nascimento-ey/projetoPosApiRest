@@ -23,6 +23,9 @@ namespace ProjetoFinalApi
 
             // Add services to the container.
 
+            // The following line enables Application Insights telemetry collection.
+            builder.Services.AddApplicationInsightsTelemetry();
+
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());

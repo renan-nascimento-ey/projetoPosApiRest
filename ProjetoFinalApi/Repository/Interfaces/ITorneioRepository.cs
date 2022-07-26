@@ -6,4 +6,6 @@ namespace ProjetoFinalApi.Repository.Interfaces;
 public interface ITorneioRepository : IRepository<Torneio>
 {
     Task<PagedList<Torneio>> GetTorneiosAsync(PagedListDefaultParameters pagedListDefaultParameters);
+
+    Task<bool> TimeTorneioAsync(int id, int timeId);
 }

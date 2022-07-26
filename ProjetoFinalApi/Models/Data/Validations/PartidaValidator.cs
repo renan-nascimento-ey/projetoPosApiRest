@@ -17,8 +17,8 @@ public class PartidaValidator : AbstractValidator<Partida>
         RuleFor(x => x.Local).MaximumLength(100).WithMessage("O Local deve ter menos de 100 caracteres.");
 
         RuleFor(x => x.TorneioId).MustAsync(ValidarTorneioIdAsync).WithMessage("O id do Torneio deve ser válido."); 
-        RuleFor(x => x.TimeCasaId).MustAsync(ValidarTimeIdAsync).WithMessage("O id do Time da Casa deve ser válido."); 
-        RuleFor(x => x.TimeVisitanteId).MustAsync(ValidarTimeIdAsync).WithMessage("O id do Time de Visitante deve ser válido.");
+        RuleFor(x => x.TimeCasaId).MustAsync(ValidarTimeIdAsync).WithMessage("O id do Time da Casa deve ser válido e ele deve pertencer ao Torneio."); 
+        RuleFor(x => x.TimeVisitanteId).MustAsync(ValidarTimeIdAsync).WithMessage("O id do Time de Visitante deve ser válido e ele deve pertencer ao Torneio.");
 
         RuleFor(x => x.TimeCasaId).Must(ValidarTimes).WithMessage("Os Times devem ser diferentes.");
 
@@ -31,10 +31,14 @@ public class PartidaValidator : AbstractValidator<Partida>
         return torneio is not null;
     }
 
-    private async Task<bool> ValidarTimeIdAsync(int timeId, CancellationToken cancellationToken)
+    private async Task<bool> ValidarTimeIdAsync(Partida partida, int timeId, CancellationToken cancellationToken)
     {
         var time = await _uof.TimeRepository.GetByIdAsync(x => x.Id == timeId);
-        return time is not null;
+
+        if (time is null)
+            return false;
+
+        return await _uof.TorneioRepository.TimeTorneioAsync(partida.TorneioId, timeId);
     }
 
     private bool ValidarTimes(Partida partida, int timeCasaId)

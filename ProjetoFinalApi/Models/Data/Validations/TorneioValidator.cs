@@ -23,7 +23,7 @@ public class TorneioValidator : AbstractValidator<Torneio>
 
         RuleFor(x => x.DataFim).NotEmpty().NotNull().WithMessage("A Data de Fim é obrigatória.");
 
-        RuleFor(x => x.Sistema).NotEmpty().NotNull().WithMessage("O Sistema é obrigatório.");
+        //RuleFor(x => x.Sistema).NotEmpty().NotNull().WithMessage("O Sistema é obrigatório.");
 
         RuleFor(x => x.PremiacaoCampeao).Custom((premiacaoCampeao, context) =>
         {
